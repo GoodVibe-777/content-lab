@@ -46,6 +46,10 @@ def test_scene_queries_uses_terms_and_visual_without_duplicates():
     ]
 
 
+def test_clean_query_preserves_letters_and_removes_punctuation():
+    assert MediaHunter._clean_query("street's night! 2026") == "street s night 2026"
+
+
 def test_score_video_rewards_tag_matches_and_resolution():
     item = video(1, "urban night city", 1920, 1080)
     assert MediaHunter.score_video(item, "urban night") > MediaHunter.score_video(video(2, "nature forest", 640, 360), "urban night")
