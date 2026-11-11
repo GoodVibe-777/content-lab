@@ -11,6 +11,7 @@ class Settings(BaseSettings):
 
     gemini_api_key: str | None = None
     groq_api_key: str | None = None
+    pixabay_api_key: str | None = None
     gemini_model: str = "gemini-3.5-flash-lite"
     groq_model: str = "llama-3.3-70b-versatile"
 
