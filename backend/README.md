@@ -28,6 +28,10 @@ A API ficará disponível em `http://127.0.0.1:8000`. A documentação interativ
 - `GET /api/content/styles`
 - `POST /api/content/generate`
 - `POST /api/media/search`
+- `POST /api/projects` e `GET /api/projects`
+- `GET /api/projects/{project_id}`
+- `POST /api/projects/{project_id}/media/search`
+- `PUT /api/projects/{project_id}/media/scenes/{scene_number}/selection`
 
 Exemplo de corpo para geração:
 
@@ -39,6 +43,10 @@ Exemplo de corpo para geração:
   "estilo": "critica_social"
 }
 ```
+
+## Persistência inicial
+
+Os projetos são salvos como arquivos JSON em `APP_DATA_DIR/projects` (padrão: `./data/projects`). Essa persistência local é adequada para desenvolvimento e prototipagem; antes de produção com múltiplos servidores, deve ser substituída por banco de dados e armazenamento compartilhado.
 
 ## Segurança
 
