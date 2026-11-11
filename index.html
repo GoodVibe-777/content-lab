@@ -1,0 +1,499 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Content Lab | Underground Studio</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg:#100d16;
+  --panel:#1b1525;
+  --panel2:#251b33;
+  --purple:#a855f7;
+  --purple2:#7029bb;
+  --text:#f5efff;
+  --muted:#a99bb9;
+  --green:#65d69a;
+  --border:#49315f;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:'Space Grotesk',sans-serif;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+.app{min-height:100vh;display:grid;grid-template-columns:225px 1fr}
+.sidebar{
+  background:#15101e;border-right:1px solid var(--border);
+  padding:25px 16px;display:flex;flex-direction:column;gap:28px;
+}
+.logo{font-family:'Press Start 2P';font-size:15px;line-height:1.8;color:#fff}
+.logo span{color:var(--purple)}
+.logo small{display:block;font:700 12px 'Space Grotesk';color:var(--purple);letter-spacing:4px}
+.nav{display:grid;gap:8px}
+.nav button{
+  border:0;background:transparent;color:var(--muted);
+  text-align:left;padding:13px;border-radius:10px;
+}
+.nav button:hover,.nav button.active{background:#39234e;color:white}
+.sidebar-bottom{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.6}
+main{min-width:0;padding:25px 30px 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:25px}
+.topbar h1{font-size:22px;margin:0}
+.topbar p{margin:4px 0;color:var(--muted);font-size:13px}
+.profile{border:1px solid var(--border);padding:9px 14px;border-radius:30px;background:var(--panel)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.stat,.panel{background:var(--panel);border:1px solid var(--border);border-radius:14px}
+.stat{padding:16px;display:flex;align-items:center;gap:13px}
+.stat .ico{font-size:25px}
+.stat strong{display:block;font-size:23px}
+.stat span{font-size:12px;color:var(--muted)}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:24px 0 12px}
+.section-head h2{font-size:16px;margin:0}
+.btn{
+  border:0;border-radius:9px;padding:11px 16px;
+  color:white;background:linear-gradient(120deg,#8b36d5,#6025a2);
+  font-weight:700;box-shadow:0 5px 18px #8b36d533;
+}
+.btn:hover{filter:brightness(1.15);transform:translateY(-1px)}
+.btn.secondary{background:#30223f;border:1px solid var(--border);box-shadow:none}
+.studio{
+  position:relative;overflow:hidden;min-height:550px;
+  border:1px solid #603b7b;border-radius:18px;
+  background:
+    linear-gradient(180deg,#1a1228 0%,#30203a 55%,#211b2b 56%,#17131e 100%);
+  box-shadow:inset 0 0 80px #09070d;
+}
+.neon{
+  position:absolute;top:22px;left:50%;transform:translateX(-50%);
+  font-family:'Press Start 2P';font-size:clamp(13px,2vw,22px);
+  color:#d7a6ff;text-shadow:0 0 8px #b34cff,0 0 22px #8a22e8;
+  white-space:nowrap;letter-spacing:2px;
+}
+.wall-graffiti{
+  position:absolute;top:95px;left:25px;color:#bd9acb;
+  font-weight:700;font-size:clamp(17px,2vw,25px);
+  transform:rotate(-8deg);opacity:.75;
+}
+.brick{
+  position:absolute;inset:0;opacity:.13;pointer-events:none;
+  background-image:linear-gradient(#b58ac0 1px,transparent 1px),
+  linear-gradient(90deg,#b58ac0 1px,transparent 1px);
+  background-size:58px 29px;
+  mask-image:linear-gradient(to bottom,black,transparent 65%);
+}
+.floor{
+  position:absolute;left:0;right:0;bottom:0;height:43%;
+  background:repeating-linear-gradient(135deg,#382b40 0 2px,#302638 2px 58px);
+  border-top:4px solid #5b4166;
+}
+.room-content{
+  position:relative;z-index:2;padding:105px 22px 24px;
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;min-height:550px;align-items:center;
+}
+.station{
+  min-height:145px;background:#1b1424eF;border:1px solid #67427e;
+  border-radius:13px;padding:15px;text-align:center;
+  box-shadow:0 8px 25px #08050c88;position:relative;
+  transition:.2s;cursor:pointer;
+}
+.station:hover{transform:translateY(-5px);border-color:#c18bff;box-shadow:0 0 20px #a855f744}
+.station .character{font-size:44px;display:block;margin:2px 0 8px;filter:drop-shadow(0 5px 3px #000)}
+.station h3{margin:0;font-size:14px}
+.station p{margin:5px 0 0;color:var(--muted);font-size:11px}
+.status{display:inline-block;margin-top:9px;padding:4px 8px;border-radius:20px;background:#292034;color:#c7b4d9;font-size:10px}
+.status.busy{background:#35234b;color:#d9b4ff}
+.status.ready{background:#173b2c;color:#8be3b2}
+.station.wide{grid-column:span 2}
+.bottom-row{display:grid;grid-template-columns:1.4fr 1fr;gap:15px;margin-top:18px}
+.panel{padding:18px}
+.panel h3{margin:0 0 14px;font-size:15px}
+.project{display:flex;align-items:center;gap:13px}
+.thumb{width:65px;height:65px;border-radius:9px;background:linear-gradient(135deg,#7029bb,#17101f);display:grid;place-items:center;font-size:26px}
+.project-info{flex:1;min-width:0}
+.project-info strong{display:block}
+.project-info small{color:var(--muted)}
+.progress{height:7px;background:#382a44;border-radius:9px;margin-top:9px;overflow:hidden}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,#7029bb,#d18aff);transition:width .3s}
+.tip{color:var(--muted);font-size:13px;line-height:1.6}
+.tip strong{color:#d9adff}
+.activity{display:grid;gap:10px;color:var(--muted);font-size:12px}
+.activity div{display:flex;gap:9px}
+.modal-bg{display:none;position:fixed;inset:0;background:#08050bd9;z-index:10;align-items:center;justify-content:center;padding:18px}
+.modal-bg.show{display:flex}
+.modal{width:min(470px,100%);background:#1d1628;border:1px solid #74469a;border-radius:16px;padding:23px;box-shadow:0 20px 70px #000}
+.modal h2{margin:0 0 8px}
+.modal p{color:var(--muted);font-size:13px;line-height:1.5}
+.modal label{display:block;margin:15px 0 6px;font-size:12px;color:#d5c4e4}
+.modal input,.modal select{
+  width:100%;padding:12px;border:1px solid var(--border);
+  background:#110d18;color:white;border-radius:8px;outline:none
+}
+.modal-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:20px}
+.toast{
+  position:fixed;right:20px;bottom:20px;background:#30203e;
+  border:1px solid #8c55b0;border-radius:10px;padding:13px 18px;
+  display:none;z-index:20;box-shadow:0 8px 30px #0008
+}
+.toast.show{display:block}
+footer{text-align:center;color:#65586f;font-size:11px;margin-top:24px}
+@media(max-width:850px){
+  .app{grid-template-columns:1fr}
+  .sidebar{padding:13px;gap:12px}
+  .logo{font-size:12px}
+  .nav{grid-template-columns:repeat(5,1fr);gap:4px}
+  .nav button{text-align:center;padding:9px 3px;font-size:11px}
+  .sidebar-bottom{display:none}
+  main{padding:18px 13px}
+  .room-content{grid-template-columns:repeat(2,minmax(0,1fr));padding:90px 12px 20px}
+  .station.wide{grid-column:span 2}
+  .bottom-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .stats{gap:7px}
+  .stat{padding:10px;gap:6px}
+  .stat .ico{font-size:18px}
+  .stat strong{font-size:17px}
+  .stat span{font-size:10px}
+  .room-content{gap:9px}
+  .station{padding:10px;min-height:130px}
+  .station .character{font-size:35px}
+  .station h3{font-size:12px}
+  .wall-graffiti{font-size:14px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="logo">CONTENT<br><span>LAB.</span><small>UNDERGROUND STUDIO</small></div>
+    <nav class="nav">
+      <button class="active" data-page="home">🏠 Início</button>
+      <button data-page="projects">📁 Projetos</button>
+      <button data-page="studio">🎛️ Estúdio</button>
+      <button data-page="library">💿 Biblioteca</button>
+      <button data-page="settings">⚙️ Configurações</button>
+    </nav>
+    <div class="sidebar-bottom">
+      <strong>NOXIS LAB</strong><br>
+      Criar. Produzir. Evoluir.<br>
+      <span id="clock">Studio online</span>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div>
+        <h1 id="pageTitle">Bem-vindo ao estúdio.</h1>
+        <p id="pageSubtitle">Sua equipe criativa está esperando a próxima ideia.</p>
+      </div>
+      <div class="profile">🟣 NOXIS <small> · Admin</small></div>
+    </header>
+
+    <section class="stats">
+      <div class="stat"><div class="ico">🎬</div><div><strong id="activeCount">0</strong><span>Projetos ativos</span></div></div>
+      <div class="stat"><div class="ico">⚙️</div><div><strong id="renderCount">0</strong><span>Renderizações</span></div></div>
+      <div class="stat"><div class="ico">✅</div><div><strong id="doneCount">0</strong><span>Projetos criados</span></div></div>
+    </section>
+
+    <div class="section-head">
+      <h2>🏚️ Seu espaço criativo</h2>
+      <button class="btn" id="newProject">＋ Novo projeto</button>
+    </div>
+
+    <section class="studio" id="studioRoom">
+      <div class="brick"></div>
+      <div class="neon">NOXIS LAB</div>
+      <div class="wall-graffiti">DREAM<br>CREATE<br>REPEAT.</div>
+      <div class="floor"></div>
+
+      <div class="room-content">
+        <div class="station" data-agent="producer">
+          <span class="character">🎧</span>
+          <h3>DJ / Producer</h3>
+          <p>Trilha e identidade sonora</p>
+          <span class="status ready">Disponível</span>
+        </div>
+        <div class="station" data-agent="writer">
+          <span class="character">✍️</span>
+          <h3>Roteirista</h3>
+          <p>Ideias e narrativas</p>
+          <span class="status ready">Disponível</span>
+        </div>
+        <div class="station" data-agent="researcher">
+          <span class="character">🔎</span>
+          <h3>Pesquisador</h3>
+          <p>Busca de imagens e vídeos</p>
+          <span class="status ready">Disponível</span>
+        </div>
+        <div class="station" data-agent="voice">
+          <span class="character">🎙️</span>
+          <h3>Locutor</h3>
+          <p>Voice Studio</p>
+          <span class="status ready">Disponível</span>
+        </div>
+        <div class="station wide" data-agent="editor">
+          <span class="character">🎞️</span>
+          <h3>Editor</h3>
+          <p>Montagem, efeitos e renderização</p>
+          <span class="status ready">Disponível</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="bottom-row">
+      <div class="panel">
+        <h3>📂 Projeto em andamento</h3>
+        <div id="projectList">
+          <div class="project">
+            <div class="thumb">🎬</div>
+            <div class="project-info">
+              <strong>Nenhum projeto ainda</strong>
+              <small>Crie seu primeiro projeto para começar.</small>
+              <div class="progress"><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>📡 Atividade do estúdio</h3>
+        <div class="activity" id="activity">
+          <div>🟣 <span>Estúdio inicializado.</span></div>
+          <div>🎧 <span>Equipe aguardando uma nova produção.</span></div>
+          <div>💡 <span>Uma boa ideia pode começar aqui.</span></div>
+        </div>
+        <p class="tip"><strong>Dica do estúdio:</strong><br>Explore as estações e acompanhe o desenvolvimento de cada projeto.</p>
+      </div>
+    </section>
+    <footer>CONTENT LAB · UNDERGROUND STUDIO · VERSÃO 0.1</footer>
+  </main>
+</div>
+
+<!-- Modal de estação -->
+<div class="modal-bg" id="agentModal">
+  <div class="modal">
+    <h2 id="agentTitle">Estação</h2>
+    <p id="agentDescription"></p>
+    <div id="agentDetails"></div>
+    <div class="modal-actions">
+      <button class="btn secondary" data-close>Fechar</button>
+      <button class="btn" id="agentAction">Abrir estação</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de novo projeto -->
+<div class="modal-bg" id="projectModal">
+  <div class="modal">
+    <h2>🎬 Novo projeto</h2>
+    <p>Vamos dar o primeiro trabalho para a equipe.</p>
+    <label for="projectName">Nome do projeto</label>
+    <input id="projectName" placeholder="Ex.: O preço da produtividade">
+    <label for="projectTheme">Tema do vídeo</label>
+    <input id="projectTheme" placeholder="Sobre o que vamos falar?">
+    <label for="projectStyle">Identidade visual</label>
+    <select id="projectStyle">
+      <option value="cinematico">Cinematográfico</option>
+      <option value="underground">Underground / Xerox</option>
+      <option value="documental">Documental</option>
+    </select>
+    <label for="projectDuration">Duração desejada</label>
+    <select id="projectDuration">
+      <option value="30">30 segundos</option>
+      <option value="45" selected>45 segundos</option>
+      <option value="60">60 segundos</option>
+      <option value="90">90 segundos</option>
+    </select>
+    <div class="modal-actions">
+      <button class="btn secondary" data-close>Cancelar</button>
+      <button class="btn" id="createProject">Criar projeto</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const agents = {
+  producer:{
+    title:"DJ / Producer",
+    description:"Responsável pela atmosfera sonora dos vídeos.",
+    details:"Em breve: biblioteca de instrumentais, trilhas, efeitos e mixagem.",
+    action:"Abrir Voice & Sound Studio"
+  },
+  writer:{
+    title:"Roteirista",
+    description:"O cérebro criativo do Content Lab.",
+    details:"Em breve: geração de roteiros, ganchos, cenas, legendas e hashtags com IA.",
+    action:"Abrir Content Brain"
+  },
+  researcher:{
+    title:"Pesquisador de mídia",
+    description:"Encontra imagens e vídeos que combinam com cada cena.",
+    details:"Em breve: pesquisa no Pixabay, classificação de relevância e seleção manual.",
+    action:"Abrir Media Hunter"
+  },
+  voice:{
+    title:"Locutor",
+    description:"Transforma o roteiro em narração.",
+    details:"Em breve: teste de vozes, interpretação, pausas e geração de áudio.",
+    action:"Abrir Voice Studio"
+  },
+  editor:{
+    title:"Editor",
+    description:"Monta o vídeo e dá vida à identidade visual.",
+    details:"Em breve: timeline, cortes, legendas animadas, efeitos e renderização FFmpeg.",
+    action:"Abrir Video Engine"
+  }
+};
+
+const $ = id => document.getElementById(id);
+const projectModal = $("projectModal");
+const agentModal = $("agentModal");
+
+let projects = JSON.parse(localStorage.getItem("contentLabProjects") || "[]");
+
+function save(){
+  localStorage.setItem("contentLabProjects",JSON.stringify(projects));
+  renderProjects();
+}
+function notify(message){
+  $("toast").textContent=message;
+  $("toast").classList.add("show");
+  setTimeout(()=>$("toast").classList.remove("show"),2600);
+}
+function openModal(el){el.classList.add("show")}
+function closeModals(){
+  projectModal.classList.remove("show");
+  agentModal.classList.remove("show");
+}
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=closeModals);
+document.querySelectorAll(".modal-bg").forEach(bg=>{
+  bg.addEventListener("click",e=>{if(e.target===bg)closeModals()});
+});
+
+document.querySelectorAll(".station").forEach(station=>{
+  station.addEventListener("click",()=>{
+    const agent=agents[station.dataset.agent];
+    $("agentTitle").textContent=agent.title;
+    $("agentDescription").textContent=agent.description;
+    $("agentDetails").textContent=agent.details;
+    $("agentAction").textContent=agent.action;
+    $("agentAction").onclick=()=>notify("Esta estação será conectada ao motor de produção na próxima etapa.");
+    openModal(agentModal);
+  });
+});
+
+$("newProject").onclick=()=>openModal(projectModal);
+
+$("createProject").onclick=()=>{
+  const name=$("projectName").value.trim();
+  const theme=$("projectTheme").value.trim();
+
+  if(!name || !theme){
+    notify("Preencha o nome e o tema do projeto.");
+    return;
+  }
+
+  projects.unshift({
+    id:Date.now(),
+    name,
+    theme,
+    style:$("projectStyle").value,
+    duration:Number($("projectDuration").value),
+    status:"Rascunho",
+    progress:0,
+    created:new Date().toLocaleDateString("pt-BR")
+  });
+
+  save();
+  $("projectName").value="";
+  $("projectTheme").value="";
+  closeModals();
+  addActivity("📝 Novo projeto criado: "+name);
+  notify("Projeto criado! A equipe está pronta.");
+};
+
+function addActivity(message){
+  const item=document.createElement("div");
+  item.textContent=message;
+  $("activity").prepend(item);
+}
+
+function renderProjects(){
+  const list=$("projectList");
+  list.innerHTML="";
+
+  const active=projects.filter(p=>p.status!=="Concluído").length;
+  const done=projects.filter(p=>p.status==="Concluído").length;
+  $("activeCount").textContent=active;
+  $("doneCount").textContent=done;
+  $("renderCount").textContent=projects.filter(p=>p.status==="Renderizando").length;
+
+  if(!projects.length){
+    list.innerHTML='<div class="project"><div class="thumb">🎬</div><div class="project-info"><strong>Nenhum projeto ainda</strong><small>Crie seu primeiro projeto para começar.</small></div></div>';
+    return;
+  }
+
+  projects.slice(0,4).forEach(p=>{
+    const row=document.createElement("div");
+    row.className="project";
+    row.style.marginBottom="13px";
+
+    const thumb=document.createElement("div");
+    thumb.className="thumb";
+    thumb.textContent="🎬";
+
+    const info=document.createElement("div");
+    info.className="project-info";
+
+    const strong=document.createElement("strong");
+    strong.textContent=p.name;
+
+    const small=document.createElement("small");
+    small.textContent=p.status+" · "+p.duration+" segundos";
+
+    const progress=document.createElement("div");
+    progress.className="progress";
+    const bar=document.createElement("span");
+    bar.style.width=p.progress+"%";
+    progress.append(bar);
+
+    info.append(strong,small,progress);
+    row.append(thumb,info);
+    list.append(row);
+  });
+}
+
+document.querySelectorAll(".nav button").forEach(button=>{
+  button.onclick=()=>{
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    button.classList.add("active");
+
+    const pages={
+      home:["Bem-vindo ao estúdio.","Sua equipe criativa está esperando a próxima ideia."],
+      projects:["Seus projetos.","Organize suas produções e acompanhe cada etapa."],
+      studio:["Estúdio underground.","Conheça as estações da sua equipe criativa."],
+      library:["Biblioteca.","Suas mídias, áudios e materiais criativos."],
+      settings:["Configurações.","Personalize seu espaço de produção."]
+    };
+
+    $("pageTitle").textContent=pages[button.dataset.page][0];
+    $("pageSubtitle").textContent=pages[button.dataset.page][1];
+
+    if(button.dataset.page!=="home" && button.dataset.page!=="studio"){
+      notify("Esta área será desenvolvida na próxima etapa.");
+    }
+  };
+});
+
+$("clock").textContent="Online · "+new Date().toLocaleDateString("pt-BR");
+renderProjects();
+</script>
+</body>
+</html>
