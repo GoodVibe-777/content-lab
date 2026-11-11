@@ -2,7 +2,9 @@ from fastapi import FastAPI, HTTPException
 
 from app.core.config import get_settings
 from app.schemas.content import GenerateContentRequest
+from app.schemas.media import MediaSearchRequest
 from app.services.content_brain import ContentBrain, ContentBrainError
+from app.services.media_hunter import MediaHunter, MediaHunterError
 
 
 settings = get_settings()
@@ -39,3 +41,14 @@ def generate_content(request: GenerateContentRequest) -> dict:
         return ContentBrain(settings).generate(request)
     except ContentBrainError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
+
+
+@app.post("/api/media/search")
+def search_media(request: MediaSearchRequest) -> dict:
+    hunter = MediaHunter(settings)
+    try:
+        return hunter.search_project([scene.model_dump() for scene in request.cenas])
+    except MediaHunterError as exc:
+        raise HTTPException(status_code=502, detail=str(exc)) from exc
+    finally:
+        hunter.close()
